@@ -19,6 +19,7 @@ class CustomDropdownField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
+      borderRadius: BorderRadius.circular(15),
       value: value,
       items: items,
       onChanged: onChanged,

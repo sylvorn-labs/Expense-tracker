@@ -1,33 +1,26 @@
 import 'package:expense_tracker/constants/color.dart';
-import 'package:expense_tracker/screens/create_project_screen.dart';
+import 'package:expense_tracker/screens/add_account_screen.dart';
 import 'package:expense_tracker/widgets/field_label.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom_dropdown_field.dart';
 import '../widgets/custome_text_field.dart';
 
-class AddBusinessScreen extends StatefulWidget {
-  const AddBusinessScreen({super.key});
+class CreateProjectScreen extends StatefulWidget {
+  const CreateProjectScreen({super.key});
 
   @override
-  State<AddBusinessScreen> createState() => _AddBusinessScreenState();
+  State<CreateProjectScreen> createState() => _CreateProjectScreenState();
 }
 
-class _AddBusinessScreenState extends State<AddBusinessScreen> {
+class _CreateProjectScreenState extends State<CreateProjectScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController =
   TextEditingController();
-  String selectedCurrency = 'INR';
 
-  final List<Map<String, String>> currencyList = [
-    {'code': 'INR', 'symbol': '₹'},
-    {'code': 'USD', 'symbol': '\$'},
-    {'code': 'EUR', 'symbol': '€'},
-    {'code': 'GBP', 'symbol': '£'},
-  ];
+  final TextEditingController descriptionController = TextEditingController();
 
-  void addBusiness() {
+  void createProject() {
     FocusScope.of(context).unfocus();
 
     if (!_formKey.currentState!.validate()) {
@@ -36,10 +29,10 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Business added successfully!'),
+        content: Text('Project created successfully!'),
       ),
     );
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateProjectScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddAccountScreen()));
   }
 
   @override
@@ -97,7 +90,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
 
                     // TITLE
                     const Text(
-                      'Add Business',
+                      'Start Project',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w800,
@@ -110,7 +103,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
 
                     // SUBTITLE
                     const Text(
-                      'Set up your business details to get started.',
+                      'Organise your work and track progress.',
                       style: TextStyle(
                         fontSize: 14,
                         color: Gray_palette.gray7,
@@ -125,8 +118,8 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                     const SizedBox(height: 8),
                     CustomTextField(
                       controller: nameController,
-                      hintText: 'Sylvorn Labs',
-                      prefixIcon: Icons.domain_outlined,
+                      hintText: 'Voops',
+                      prefixIcon: Icons.folder_copy_outlined,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter business name';
@@ -136,33 +129,19 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                     ),
                     const SizedBox(height: 22),
 
-                    // DROPDOWN
-                    FieldLabel(text: 'Currency',isRequired: true,),
-                    const SizedBox(height: 8),
-                    CustomDropdownField<String>(
-                      value: selectedCurrency,
-                      prefixWidget: Text(
-                        currencyList.firstWhere(
-                              (c) => c['code'] == selectedCurrency,
-                        )['symbol']!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: BrandColor.brand1,
-                        ),
-                      ),
-                      items: currencyList.map((currency) {
-                        return DropdownMenuItem<String>(
-                          value: currency['code'],
-                          child: Text(currency['code']!),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() {
-                            selectedCurrency = value;
-                          });
+                    //Description
+                    FieldLabel(text: 'Description',isRequired: true,),
+                    const SizedBox(height: 8,),
+
+                    CustomTextField(
+                      controller: descriptionController,
+                      hintText: 'Simple application to control finances.',
+                      prefixIcon: Icons.text_snippet_outlined,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter Description';
                         }
+                        return null;
                       },
                     ),
 
@@ -173,7 +152,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: addBusiness,
+                        onPressed: createProject,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: BrandColor.brand1,
                           foregroundColor: Colors.white,
@@ -183,7 +162,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                           elevation: 0,
                         ),
                         child: const Text(
-                          'Add Business',
+                          'Start Project',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
