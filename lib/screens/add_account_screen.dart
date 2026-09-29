@@ -1,33 +1,38 @@
 import 'package:expense_tracker/constants/color.dart';
-import 'package:expense_tracker/screens/create_project_screen.dart';
 import 'package:expense_tracker/widgets/field_label.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_dropdown_field.dart';
 import '../widgets/custome_text_field.dart';
 
-class AddBusinessScreen extends StatefulWidget {
-  const AddBusinessScreen({super.key});
+class AddAccountScreen extends StatefulWidget {
+  const AddAccountScreen({super.key});
 
   @override
-  State<AddBusinessScreen> createState() => _AddBusinessScreenState();
+  State<AddAccountScreen> createState() => _AddBusinessScreenState();
 }
 
-class _AddBusinessScreenState extends State<AddBusinessScreen> {
+class _AddBusinessScreenState extends State<AddAccountScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController =
   TextEditingController();
-  String selectedCurrency = 'INR';
+
+  final TextEditingController balanceController =
+  TextEditingController();
+
+  String selectedCurrency = 'Cash';
 
   final List<Map<String, String>> currencyList = [
-    {'code': 'INR', 'symbol': '₹'},
-    {'code': 'USD', 'symbol': '\$'},
-    {'code': 'EUR', 'symbol': '€'},
-    {'code': 'GBP', 'symbol': '£'},
+    {'code': 'Cash', 'symbol': '💵'},
+    {'code': 'Bank', 'symbol': '🏦'},
+    {'code': 'Card', 'symbol': '💳'},
+    {'code': 'Wallet', 'symbol': '👛'},
+    {'code': 'Other', 'symbol': '📁'},
+
   ];
 
-  void addBusiness() {
+  void addAccount() {
     FocusScope.of(context).unfocus();
 
     if (!_formKey.currentState!.validate()) {
@@ -36,15 +41,15 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Business added successfully!'),
+        content: Text('Account Added successfully!'),
       ),
     );
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateProjectScreen()));
   }
 
   @override
   void dispose() {
     nameController.dispose();
+    balanceController.dispose();
     super.dispose();
   }
 
@@ -93,11 +98,11 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 120),
+                    const SizedBox(height: 100),
 
                     // TITLE
                     const Text(
-                      'Add Business',
+                      'Add Account',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w800,
@@ -110,7 +115,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
 
                     // SUBTITLE
                     const Text(
-                      'Set up your business details to get started.',
+                      'Add bank or wallet account to track transactions.',
                       style: TextStyle(
                         fontSize: 14,
                         color: Gray_palette.gray7,
@@ -119,17 +124,17 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
 
                     const SizedBox(height: 75),
 
-                    // BUSINESS NAME
+                    // BANK NAME
                     FieldLabel(text: 'Name',isRequired: true,),
 
                     const SizedBox(height: 8),
                     CustomTextField(
                       controller: nameController,
-                      hintText: 'Sylvorn Labs',
+                      hintText: 'HDFC Bank',
                       prefixIcon: Icons.domain_outlined,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Please enter business name';
+                          return 'Please enter Bank name';
                         }
                         return null;
                       },
@@ -137,7 +142,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                     const SizedBox(height: 22),
 
                     // DROPDOWN
-                    FieldLabel(text: 'Currency',isRequired: true,),
+                    FieldLabel(text: 'Kind',isRequired: true,),
                     const SizedBox(height: 8),
                     CustomDropdownField<String>(
                       value: selectedCurrency,
@@ -166,14 +171,32 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                       },
                     ),
 
+                    const SizedBox(height: 22),
+
+                    FieldLabel(text: 'Opening Balance',isRequired: true,),
+
+                    const SizedBox(height: 8),
+                    CustomTextField(
+                      keyboardType: TextInputType.number,
+                      controller: balanceController,
+                      hintText: '10,000 INR',
+                      prefixIcon: Icons.currency_rupee,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter Balance';
+                        }
+                        return null;
+                      },
+                    ),
+
                     const SizedBox(height: 75),
 
-                    // ADD BUSINESS BUTTON
+                    // ADD Account BUTTON
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: addBusiness,
+                        onPressed: addAccount,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: BrandColor.brand1,
                           foregroundColor: Colors.white,
@@ -183,7 +206,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                           elevation: 0,
                         ),
                         child: const Text(
-                          'Add Business',
+                          'Add Account',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
