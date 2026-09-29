@@ -1,4 +1,5 @@
 import 'package:expense_tracker/constants/color.dart';
+import 'package:expense_tracker/screens/create_party_screen.dart';
 import 'package:expense_tracker/widgets/field_label.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,7 @@ class _AddBusinessScreenState extends State<AddAccountScreen> {
         content: Text('Account Added successfully!'),
       ),
     );
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePartyScreen()));
   }
 
   @override
