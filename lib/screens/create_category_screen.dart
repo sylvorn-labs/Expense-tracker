@@ -1,3 +1,4 @@
+import 'package:expense_tracker/screens/record_transaction_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
@@ -54,6 +55,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
         content: Text('Category created as $selectedKind!'),
       ),
     );
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>RecordTransactionScreen()));
   }
 
   @override
